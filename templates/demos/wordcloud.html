@@ -7,12 +7,25 @@
 <h2>Wordcloud Demonstration</h2>
 
 <div class="documentation-content">
+  <form action="{% url 'demos_wordcloud' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+  </form>
+
+  <canvas id="wordcloud_canvas" width="400" height="400">
+  </canvas>
 
   <p>
-    Wordcloud demo.
+    {{ keywords | safe }}
   </p>
 
 </div>
-
-
+{% if keywords %}
+<script src='/static/js/wordcloud2.js'></script>
+<script>
+  var list = { list: {{ keywords|safe }} }
+  WordCloud(document.getElementById('wordcloud_canvas'), list );
+</script>
+{% endif %}
 {% endblock %}
