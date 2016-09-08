@@ -17,7 +17,8 @@ logger.setLevel(logging.DEBUG)
 
 
 class DemoListView(TemplateView):
-    template_name="demos/index.html"
+    template_name = "demos/index.html"
+
 
 def remap(vals, low=10, high=30):
     """return a new list with an item corresponding to each element of
@@ -29,18 +30,18 @@ def remap(vals, low=10, high=30):
     vals_range = max_val - min_val
     new_range = high - low
     return [((v - min_val) / vals_range) * new_range + low for v in vals]
-    
+
+
 class WordCloudView(FormView):
     template_name = "demos/wordcloud.html"
     form_class = WordcloudForm
     success_url = reverse_lazy("demos_wordcloud")
 
-    
     def form_valid(self, form, **kwargs):
         context = self.get_context_data(**kwargs)
         context['form'] = form
-        
-        ## refactor - also used by swagger_ui view
+
+        # refactor - also used by swagger_ui view
         api_account = assure_api_account_exists(self.request.user)
         app = assure_account_app_list(api_account)[0]
         key = app.apikey_set.first()
@@ -54,9 +55,9 @@ class WordCloudView(FormView):
         }
 
         url = form['target_url'].value()
-        
+
         params = {
-            'url' : url,
+            'url': url,
             'embed': 'keywords'
         }
 
@@ -69,7 +70,7 @@ class WordCloudView(FormView):
         keyword_raw_data = json['_embedded']['grapeshot:keywords']['keywords']
         vals = [item['score'] for item in keyword_raw_data]
         new_vals = remap(vals)
-        remapped_keywords = [list (v) for v in zip((item['name'] for item in keyword_raw_data), new_vals)]
+        remapped_keywords = [list(v) for v in zip((item['name'] for item in keyword_raw_data), new_vals)]
 
         context['keywords'] = remapped_keywords
         context['json'] = json
