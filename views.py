@@ -1,19 +1,21 @@
-import requests
-
 from django.conf import settings
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse_lazy
+
+from grapeshot_signal import SignalClient, rels, APIError, OverQuotaError
+
 import logging
+
+from requests.exceptions import ConnectionError
 
 from dev_portal.models.api_account import assure_api_account_exists
 from dev_portal.models.api_app import assure_account_app_list
 
 from .forms import WordcloudForm
 
-logger = logging.getLogger("demos")
-logger.setLevel(logging.DEBUG)
+logger = logging.getLogger("wordcloud")
 
 
 class DemoListView(TemplateView):
@@ -22,14 +24,16 @@ class DemoListView(TemplateView):
 
 def remap(vals, low=10, high=30):
     """return a new list with an item corresponding to each element of
-    `vals` such ratios are maintained and the new items fall between `low` and `high`.
+    `vals` such ratios are maintained and the new items fall between
+    `low` and `high`.  The defaults are intended for use as font
+    sizes.
+
     """
 
     min_val = min(vals)
     max_val = max(vals)
-    vals_range = max_val - min_val
-    new_range = high - low
-    return [((v - min_val) / vals_range) * new_range + low for v in vals]
+    scale_factor = (high - low) / (max_val - min_val)
+    return [(v - min_val) * scale_factor + low for v in vals]
 
 
 class WordCloudView(FormView):
@@ -37,42 +41,36 @@ class WordCloudView(FormView):
     form_class = WordcloudForm
     success_url = reverse_lazy("demos_wordcloud")
 
-    def form_valid(self, form, **kwargs):
-        context = self.get_context_data(**kwargs)
-        context['form'] = form
-
+    def _get_api_token(self):
         # refactor - also used by swagger_ui view
         api_account = assure_api_account_exists(self.request.user)
         app = assure_account_app_list(api_account)[0]
         key = app.apikey_set.first()
-        token = key.token()
+        return key.token()
 
-        headers = {
-            'Authorization': 'Bearer {}'.format(token),
-            'Accept': 'application/hal+json',
-            #FIXME
-            'X-Forwarded-Proto': 'https'
-        }
+    def form_valid(self, form, **kwargs):
+
+        client = SignalClient(self._get_api_token())
 
         url = form['target_url'].value()
 
-        params = {
-            'url': url,
-            'embed': 'keywords'
-        }
+        try:
+            page = client.get_page(url, [rels.keywords])
+            if not page.is_error() and not page.is_queued():
+                keywords = page.get_embedded(rels.keywords)
+            else:
+                keywords = []
+        except (APIError, OverQuotaError, ConnectionError) as e:
+            logger.debug(e)
 
-        json = requests.get(
-            "{}v1/pages".format(settings.OPEN_API_URL),
-            params=params,
-            headers=headers
-        ).json()
-
-        keyword_raw_data = json['_embedded']['grapeshot:keywords']['keywords']
-        vals = [item['score'] for item in keyword_raw_data]
+        vals = [item['score'] for item in keywords]
         new_vals = remap(vals)
-        remapped_keywords = [list(v) for v in zip((item['name'] for item in keyword_raw_data), new_vals)]
+        remapped_keywords = [list(v) for v in
+                             zip((item['name'] for item in vals),
+                                 new_vals)]
 
+        context = self.get_context_data(**kwargs)
+        context['form'] = form
         context['keywords'] = remapped_keywords
-        context['json'] = json
 
         return render(self.request, self.template_name, context)
