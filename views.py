@@ -64,10 +64,10 @@ class WordCloudView(FormView):
             if not page.is_error() and not page.is_queued():
                 keywords = page.get_embedded(rels.keywords)
             else:
-                keywords = []
+                keywords = {}
         except (APIError, OverQuotaError, ConnectionError) as e:
             logger.debug("get_page exception: {}".format(e))
-            keywords = []
+            raise
 
         keywords = keywords['keywords']  # shouldn't get_embedded do this?
 
