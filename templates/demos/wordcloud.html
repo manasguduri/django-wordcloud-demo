@@ -7,21 +7,40 @@
 <h2>Wordcloud Demonstration</h2>
 
 <div class="documentation-content">
-  <form action="{% url 'demos_wordcloud' %}" method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit" />
-  </form>
+  <div>
+    <p>This is a simple visualisation using the keywords of a url. We use the
+      API to fetch keywords and then assign font sizes using the relative sizes
+      of the keyword scores. The words are drawn using
+      a <a href="http://timdream.org/wordcloud2.js/">third party script.</a>
+      This works better with pages that produce a reasonable number of
+      keywords.</p>
+    <p>The API call is made live using your api key.</p>
 
-  <canvas id="wordcloud_canvas" width="400" height="400">
-  </canvas>
+    <form action="{% url 'demos_wordcloud' %}" method="post" >
+      {% csrf_token %}
+      <div class="form-group">
+        {{ form }}
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
 
+  <div>
+    {% if keywords %}
+
+    <canvas id="wordcloud_canvas" width="300" height="300">
+    </canvas>
+
+    <script src='/static/js/wordcloud2.js'></script>
+    <script>
+      var list = { list: {{ keywords|safe }} }
+      WordCloud(document.getElementById('wordcloud_canvas'), list );
+    </script>
+    {% else %}
+    {% if request.method == 'POST' %}
+    <p>That url did not produce any keywords. Please try another.</p>
+    {% endif %}
+    {% endif %}
+  </div>
 </div>
-{% if keywords %}
-<script src='/static/js/wordcloud2.js'></script>
-<script>
-  var list = { list: {{ keywords|safe }} }
-  WordCloud(document.getElementById('wordcloud_canvas'), list );
-</script>
-{% endif %}
 {% endblock %}

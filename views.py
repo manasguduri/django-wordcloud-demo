@@ -33,6 +33,8 @@ def remap(vals, low=10, high=30):
     """
     if (not vals):
         return []
+    if len(vals) == 1:
+        return [high]
     min_val = min(vals)
     max_val = max(vals)
     scale_factor = (high - low) / (max_val - min_val)
@@ -60,7 +62,7 @@ class WordCloudView(FormView):
         url = form['target_url'].value()
 
         try:
-            page = client.get_page(url, "keywords")
+            page = client.get_page(url, rels.keywords)
             if not page.is_error() and not page.is_queued():
                 keywords = page.get_embedded(rels.keywords)
             else:
@@ -69,7 +71,7 @@ class WordCloudView(FormView):
             logger.debug("get_page exception: {}".format(e))
             raise
 
-        keywords = keywords['keywords']  # shouldn't get_embedded do this?
+        keywords = keywords.get('keywords', [])  # shouldn't get_embedded do this?
 
         vals = [item['score'] for item in keywords]
         new_vals = remap(vals)
