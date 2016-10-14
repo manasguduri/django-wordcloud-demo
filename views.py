@@ -37,7 +37,10 @@ def remap(vals, low=10, high=30):
         return [high]
     min_val = min(vals)
     max_val = max(vals)
-    scale_factor = (high - low) / (max_val - min_val)
+    val_range = (max_val - min_val)
+    if val_range <= 0.0001:
+        return [high] * len(vals)
+    scale_factor = (high - low) / val_range
     return [(v - min_val) * scale_factor + low for v in vals]
 
 
@@ -75,6 +78,7 @@ class WordCloudView(FormView):
 
         vals = [item['score'] for item in keywords]
         new_vals = remap(vals)
+        logger.debug('************{}'.format(new_vals))
         remapped_keywords = [list(v) for v in
                              zip((item['name'] for item in keywords),
                                  new_vals)]
