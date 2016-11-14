@@ -52,7 +52,8 @@ def remap(vals, low=10, high=30, tolerance=0.0001):
 
 @register.inclusion_tag('wordcloud_demo/wordcloud.html')
 def wordcloud(url, text_min_size=10, text_max_size=30,
-              canvas_height=200, canvas_width=200):
+              canvas_height=300, canvas_width=300, text_div=False,
+              canvas_class="", keywords_class=""):
     '''A django inclusion tag to make a wordcloud canvas from a url's keywords
 
     Usage:
@@ -62,11 +63,16 @@ def wordcloud(url, text_min_size=10, text_max_size=30,
         {{ wordcloud "http://example.com"}}
 
     Args:
-      url: The url of the webpage from which to extract keywords.
-      text_min_size: Minimum font size for words in the wordcloud.
-      text_max_size: Maximum font size for words in the wordcloud.
-      canvas_height: Height of the canvas.
-      canvas_width: Width of the canvas.
+      url (string): The url of the webpage from which to extract keywords.
+      text_min_size (int): Minimum font size for words in the wordcloud.
+      text_max_size (int): Maximum font size for words in the wordcloud.
+      canvas_height (int): Height of the canvas.
+      canvas_width (int): Width of the canvas.
+      text_div (boolean): If true create a div with id "wordcloud_keywords"
+                containing a table of keyword/size pairs corresponding to the
+                canvas text
+      canvas_class (str): The class attribute for the canvas.
+      keywords_class (str): The class attribute for the keywords div.
 
     '''
 
@@ -90,9 +96,12 @@ def wordcloud(url, text_min_size=10, text_max_size=30,
     remapped_keywords = [list(v) for v in
                          zip((item['name'] for item in keywords),
                              new_vals)]
-
-    return {
+    context = {
         'wordcloud_keywords': remapped_keywords,
         'wordcloud_canvas_width': canvas_width,
         'wordcloud_canvas_height': canvas_height,
+        'text_div': text_div,
+        'canvas_class': canvas_class,
+        'keywords_class': keywords_class
     }
+    return context

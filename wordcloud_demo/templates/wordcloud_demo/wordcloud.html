@@ -1,8 +1,16 @@
 {% load static %}
 <div id="wordcloud_tag">
-  <canvas id="wordcloud_canvas" height="{{ wordcloud_canvas_height }}" width=" {{ wordcloud_canvas_width }}">
+  <canvas id="wordcloud_canvas" class="{{ canvas_class }}" height="{{ wordcloud_canvas_height }}" width=" {{ wordcloud_canvas_width }}">
   </canvas>
-
+  {% if text_div %}
+  <div id="wordcloud_keywords" class="{{ keywords_class }}">
+    <table>
+      {% for keyword, size in wordcloud_keywords %}
+      <tr><td>{{ keyword }}</td><td>{{ size }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+  {% endif %}
   <script src="{% static 'js/wordcloud2.js' %}"></script>
   <script>
     var wordcloud_list = { list: {{ wordcloud_keywords|safe }} };

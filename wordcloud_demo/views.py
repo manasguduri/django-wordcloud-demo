@@ -5,7 +5,7 @@ from .forms import WordcloudForm
 
 
 class WordCloudDemoView(FormView):
-    '''A view to illustrate the use of the wordcloud '''
+    '''A view to illustrate the use of the wordcloud inclusion tag'''
 
     template_name = "wordcloud_demo/wordcloud_form.html"
     form_class = WordcloudForm
