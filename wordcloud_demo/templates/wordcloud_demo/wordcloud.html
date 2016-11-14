@@ -1,0 +1,11 @@
+{% load static %}
+<div id="wordcloud_tag">
+  <canvas id="wordcloud_canvas" height="{{ wordcloud_canvas_height }}" width=" {{ wordcloud_canvas_width }}">
+  </canvas>
+
+  <script src="{% static 'js/wordcloud2.js' %}"></script>
+  <script>
+    var wordcloud_list = { list: {{ wordcloud_keywords|safe }} };
+    WordCloud(document.getElementById('wordcloud_canvas'), wordcloud_list );
+  </script>
+</div>

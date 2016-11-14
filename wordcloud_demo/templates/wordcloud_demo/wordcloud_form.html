@@ -1,0 +1,34 @@
+{% extends "wordcloud_demo/base.html" %}
+{% load wordcloud %}
+{% block body %}
+<h2>Wordcloud Demonstration</h2>
+<div class="documentation-content">
+  <div>
+    <p>This is a simple visualisation using the keywords of a url. We use the
+      Signal API to fetch keywords and then assign font sizes using the
+      relative sizes of the keyword scores. The words are drawn using
+      a <a href="http://timdream.org/wordcloud2.js/">third party script.</a>
+      This works better with pages that produce a reasonable number of
+      keywords.</p>
+
+    <form action="{% url 'wordcloud' %}" method="post" >
+      {% csrf_token %}
+      <div class="form-group">
+        {{ form.as_p }}
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-4">
+        {% if request.method == 'POST' %}
+          {% wordcloud wordcloud_url %}
+        {% endif %}
+      </div>
+      <div class="col-sm-8">
+        <p id="keyword_holder"></p>
+      </div>
+  </div>
+</div>
+{% endblock %}
