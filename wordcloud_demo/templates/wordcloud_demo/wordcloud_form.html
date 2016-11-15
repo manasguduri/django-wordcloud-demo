@@ -1,0 +1,21 @@
+{% extends "wordcloud_demo/base.html" %}
+{% block body %}
+{% load wordcloud %}
+<div id="wordcloud_demo">
+  <form action="{% url 'wordcloud' %}" method="post" >
+    {% csrf_token %}
+    <div class="form-group">
+      {{ form.as_p }}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    {% if request.method == 'POST' %}
+    {% wordcloud wordcloud_url text_div=True canvas_class="col-sm-6" keywords_class="col-sm-6" %}
+    {% endif %}
+  </div>
+</div>
+{{ block.super }}
+{% endblock %}

@@ -1,0 +1,115 @@
+{
+  "_links": {
+    "self": {
+      "href": "/v1/pages?url=http%3A%2F%2Fwww.bbc.co.uk%2Fnews%2Fworld-middle-east-37298968"
+    },
+    "curies": [
+      {
+        "name": "grapeshot",
+        "href": "/rels/grapeshot/{rel}",
+        "templated": true
+      }
+    ],
+    "grapeshot:keywords": {
+      "href": "/v1/keywords?url=http%3A%2F%2Fwww.bbc.co.uk%2Fnews%2Fworld-middle-east-37298968"
+    },
+    "grapeshot:segments": {
+      "href": "/v1/segments?url=http%3A%2F%2Fwww.bbc.co.uk%2Fnews%2Fworld-middle-east-37298968"
+    }
+  },
+  "url": "http://www.bbc.co.uk/news/world-middle-east-37298968",
+  "status": "ok",
+  "language": "en",
+  "_embedded": {
+    "grapeshot:keywords": {
+      "_links": {
+        "self": {
+          "href": "/v1/keywords?url=http%3A%2F%2Fwww.bbc.co.uk%2Fnews%2Fworld-middle-east-37298968"
+        },
+        "grapeshot:page": {
+          "href": "/v1/pages?url=http%3A%2F%2Fwww.bbc.co.uk%2Fnews%2Fworld-middle-east-37298968"
+        },
+        "grapeshot:segments": {
+          "href": "/v1/segments?url=http%3A%2F%2Fwww.bbc.co.uk%2Fnews%2Fworld-middle-east-37298968"
+        }
+      },
+      "url": "http://www.bbc.co.uk/news/world-middle-east-37298968",
+      "status": "ok",
+      "language": "en",
+      "keywords": [
+        {
+          "name": "Raqqa",
+          "score": 2.012
+        },
+        {
+          "name": "so called Islamic State",
+          "score": 1.859
+        },
+        {
+          "name": "BBC",
+          "score": 1.65
+        },
+        {
+          "name": "Turkey and",
+          "score": 1.514
+        },
+        {
+          "name": "US President",
+          "score": 1.514
+        },
+        {
+          "name": "Barack Obama",
+          "score": 0.868
+        },
+        {
+          "name": "Recep Tayyip Erdogan",
+          "score": 0.868
+        },
+        {
+          "name": "Bashar al Assad",
+          "score": 0.508
+        },
+        {
+          "name": "coup",
+          "score": 0.508
+        },
+        {
+          "name": "diplomatic",
+          "score": 0.508
+        },
+        {
+          "name": "G20",
+          "score": 0.508
+        },
+        {
+          "name": "government",
+          "score": 0.508
+        },
+        {
+          "name": "improve",
+          "score": 0.508
+        },
+        {
+          "name": "Isil",
+          "score": 0.508
+        },
+        {
+          "name": "jihadists",
+          "score": 0.508
+        },
+        {
+          "name": "Prime Minister",
+          "score": 0.508
+        },
+        {
+          "name": "terrorists",
+          "score": 0.508
+        },
+        {
+          "name": "US State Department",
+          "score": 0.508
+        }
+      ]
+    }
+  }
+}
