@@ -12,12 +12,16 @@ setup(
     version='0.0.a.1',
     packages=find_packages(),
     include_package_data=True,
-    license='MIT License',  # example license
+    license='MIT License',
     description="A Django wordcloud generation app using Grapeshot's Signal API.",
     long_description=README,
     url='https://github.com/grapeshot/django-wordcloud-demo',
     author='Paul Rudin',
     author_email='paul.rudin@grapeshot.com',
+    install_requires=[
+        'django',
+        'grapeshot-signal-sdk',
+    ],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',

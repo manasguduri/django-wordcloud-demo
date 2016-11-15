@@ -4,6 +4,5 @@ from .views import WordCloudDemoView
 
 
 urlpatterns = [
-    url(r"$", RedirectView.as_view(url="wordcloud")),
     url(r"wordcloud/?$", WordCloudDemoView.as_view(), name="wordcloud")
 ]
