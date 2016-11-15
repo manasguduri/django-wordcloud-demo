@@ -1,0 +1,4 @@
+include LICENSE
+include README.rst
+recursive-include wordcloud_demo/static *
+recursive-include wordcloud_demo/templates *
