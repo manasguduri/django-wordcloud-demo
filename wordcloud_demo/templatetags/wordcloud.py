@@ -96,12 +96,15 @@ def wordcloud(url, text_min_size=10, text_max_size=30,
     remapped_keywords = [list(v) for v in
                          zip((item['name'] for item in keywords),
                              new_vals)]
+    display_vals = zip((item['name'] for item in keywords),
+                       ('{0:.2f}'.format(v) for v in vals))
     context = {
         'wordcloud_keywords': remapped_keywords,
         'wordcloud_canvas_width': canvas_width,
         'wordcloud_canvas_height': canvas_height,
         'text_div': text_div,
         'canvas_class': canvas_class,
-        'keywords_class': keywords_class
+        'keywords_class': keywords_class,
+        'display_vals': display_vals
     }
     return context

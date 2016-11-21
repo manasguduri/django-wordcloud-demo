@@ -7,5 +7,4 @@ class WordcloudForm(forms.Form):
         max_length=200,
         label='Please enter a url',
         initial='http://',
-        widget=TextInput({'class': 'form-control'})
     )
