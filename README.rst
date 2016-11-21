@@ -73,7 +73,7 @@ The height and width of the canvas.
 text_div
 ~~~~~~~~
 
-If True generate a div containing a table of keyword/size pairs.
+If True generate a div containing a table of keyword/score pairs.
 
 canvas_class, keywords_class
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

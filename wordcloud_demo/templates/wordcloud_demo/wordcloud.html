@@ -5,7 +5,7 @@
   {% if text_div %}
   <div id="wordcloud_keywords" class="{{ keywords_class }}">
     <table>
-      {% for keyword, size in wordcloud_keywords %}
+      {% for keyword, size in display_vals %}
       <tr><td>{{ keyword }}</td><td>{{ size }}</td></tr>
       {% endfor %}
     </table>
