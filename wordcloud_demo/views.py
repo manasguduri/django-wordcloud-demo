@@ -1,20 +1,25 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse_lazy
+from django.forms import ValidationError
 from .forms import WordcloudForm
+from django.contrib import messages
 
 
-class WordCloudDemoView(FormView):
-    '''A view to illustrate the use of the wordcloud inclusion tag'''
-
-    template_name = "wordcloud_demo/wordcloud_form.html"
-    form_class = WordcloudForm
-    success_url = reverse_lazy("demos_wordcloud")
-
-    def form_valid(self, form, **kwargs):
-        context = self.get_context_data(**kwargs)
-        context['form'] = form
-
-        context['wordcloud_url'] = form['target_url'].value()
-
-        return render(self.request, self.template_name, context)
+def wordcloud_demoview(request):
+    template = "wordcloud_demo/wordcloud_form.html"
+    if request.method == 'POST':
+        form = WordcloudForm(request.POST)
+        if form.is_valid():
+            context = {
+                'form': form,
+                'wordcloud_url': form['target_url'].value()
+            }
+            return render(request, template, context)
+        else:
+            messages.add_message(request, messages.ERROR,
+                                 'Please enter an http or https url')
+            return redirect(reverse_lazy('wordcloud'))
+    else:
+        form = WordcloudForm()
+        return render(request, template, context={'form': form})

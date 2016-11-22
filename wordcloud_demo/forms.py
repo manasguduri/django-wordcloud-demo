@@ -1,5 +1,5 @@
 from django import forms
-from django.forms.widgets import TextInput
+from django.core.validators import URLValidator
 
 
 class WordcloudForm(forms.Form):
@@ -7,4 +7,5 @@ class WordcloudForm(forms.Form):
         max_length=200,
         label='Please enter a url',
         initial='http://',
+        validators=[URLValidator(schemes=['http', 'https'])]
     )
