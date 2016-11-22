@@ -108,3 +108,9 @@ def wordcloud(url, text_min_size=10, text_max_size=30,
         'display_vals': display_vals
     }
     return context
+
+
+# http://vanderwijk.info/blog/adding-css-classes-formfields-in-django-templates/
+@register.filter(name='addcss')
+def addcss(field, css):
+    return field.as_widget(attrs={"class": css})
