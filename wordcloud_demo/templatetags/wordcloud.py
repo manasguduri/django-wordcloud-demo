@@ -53,7 +53,7 @@ def remap(vals, low=10, high=30, tolerance=0.0001):
 @register.inclusion_tag('wordcloud_demo/wordcloud.html')
 def wordcloud(url, text_min_size=10, text_max_size=30,
               canvas_height=300, canvas_width=300, text_div=False,
-              canvas_class="", keywords_class=""):
+              canvas_class="", keywords_div_class="", keywords_table_class=""):
     '''A django inclusion tag to make a wordcloud canvas from a url's keywords
 
     Usage:
@@ -72,7 +72,8 @@ def wordcloud(url, text_min_size=10, text_max_size=30,
                 containing a table of keyword/size pairs corresponding to the
                 canvas text
       canvas_class (str): The class attribute for the canvas.
-      keywords_class (str): The class attribute for the keywords div.
+      keywords_div_class (str): The class attribute for the keywords div.
+      keywords_table_class (str): The class attribute for the keywords table.
 
     '''
 
@@ -104,7 +105,8 @@ def wordcloud(url, text_min_size=10, text_max_size=30,
         'wordcloud_canvas_height': canvas_height,
         'text_div': text_div,
         'canvas_class': canvas_class,
-        'keywords_class': keywords_class,
+        'keywords_div_class': keywords_div_class,
+        'keywords_table_class': keywords_table_class,
         'display_vals': display_vals
     }
     return context

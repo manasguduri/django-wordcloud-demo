@@ -1,8 +1,8 @@
 from django.conf.urls import url
 from django.views.generic import RedirectView
-from .views import WordCloudDemoView
+from .views import wordcloud_demoview
 
 
 urlpatterns = [
-    url(r"wordcloud/?$", WordCloudDemoView.as_view(), name="wordcloud")
+    url(r"wordcloud/?$", wordcloud_demoview, name="wordcloud")
 ]
