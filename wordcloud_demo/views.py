@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse_lazy
-from django.forms import ValidationError
 from .forms import WordcloudForm
 from django.contrib import messages
 
